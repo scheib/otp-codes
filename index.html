@@ -19,6 +19,9 @@ function rotateDigit(old, offset, reverse) {
 }
 
 function rotateString(oldString, oneTimePad, reverse) {
+    if (oneTimePad.length == 0)
+        return oldString;
+
     let output = "";
     for (let i=0; i < oldString.length; i++) {
         output += rotateDigit(oldString.charAt(i),
@@ -28,12 +31,14 @@ function rotateString(oldString, oneTimePad, reverse) {
     return output;
 }
 
-input.onchange = input.onkeyup = (event) => {
-    output.textContent = "v\n"
-    const str = event.target.value;
-    const len = str.length;
-    output.textContent += str;
+function encode(oneTimePad) {
+    output.textContent = "";
+    encodedDigits.map(digits =>
+        output.textContent += rotateString(digits, oneTimePad) + "\n");
 }
+
+input.onchange = input.onkeyup = (event) => encode(event.target.value);
+encode('');
 
 // Tests
 // rotateDigit: basic rotation back and forth, over the 0 line
