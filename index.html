@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <input id='input' type='text' autofocus/>
-    <pre id='output'></pre>
+    <input id='oneTimePad' type='text' autofocus/>
+    <pre id='decodedOutput'></pre>
+    <textarea id='newStringToEncode' rows=8 cols=40>Enter a new string of digits here
+to have it encoded. For example:
+let encodedDigits = 
+    '00000000\n' +
+    '12345678\n' +
+    '99999999';
+    </textarea>
+    <pre id='encodedOutput'></pre>
     <script>
 "use strict";
 
@@ -49,12 +57,20 @@ function rotateString(oldString, oneTimePad, reverse) {
     return output;
 }
 
-function decode(oneTimePad) {
-    output.textContent = rotateString(encodedDigits, oneTimePad);
+function updateOutputs() {
+    decodedOutput.textContent =
+        "Decoded values:\n" + rotateString(encodedDigits, oneTimePad.value);
+    encodedOutput.textContent = rotateString(newStringToEncode.value,
+                                             oneTimePad.value,
+                                             true /* reverse */);
 }
 
-input.onchange = input.onkeyup = (event) => decode(event.target.value);
-decode('');
+oneTimePad.onchange = updateOutputs;
+oneTimePad.onkeyup = updateOutputs;
+newStringToEncode.onchange = updateOutputs;
+newStringToEncode.onkeyup = updateOutputs;
+
+updateOutputs();  // Produce a first time decoding
 
 // Tests
 // rotateDigitChar: basic rotation back and forth, over the 0 line
