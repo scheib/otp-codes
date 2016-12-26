@@ -15,58 +15,67 @@ let encodedDigits =
     '12345678\n' +
     '99999999';
 
-function rotateDigit(old, offset, reverse) {
+// Take a single character 'digit' and offset it by the ASCII code
+// of another character named 'offset'. The offset is modulo by 10
+// so that numbers wrap around.
+// If 'reverse' is true, then perform the operation in reverse
+// (when encoding new values). 
+function rotateDigitChar(digit, offset, reverse) {
     const sign = (reverse) ? -1 : 1;
-    console.assert(old.length == 1);
+    console.assert(digit.length == 1);
     console.assert(offset.length == 1);
-    const oldInt = parseInt(old);
-    if (isNaN(oldInt))
-        return old;
+    const digitAsInt = parseInt(digit);
+    if (isNaN(digitAsInt))
+        return digit;
     const signedOffset = sign * offset.charCodeAt(0);
-    const newInt = ((oldInt + signedOffset) % 10 + 10) % 10; // handle negative 
+    const newInt = ((digitAsInt + signedOffset) % 10 + 10) % 10; // handle negative 
     return newInt;
 }
 
+// Take an input string 'oldString' and rotate each character by 
+// a corresponding character provided by the 'oneTimePad' string.
+// If 'reverse' is true, then perform the operation in reverse
+// (when encoding new values). 
 function rotateString(oldString, oneTimePad, reverse) {
     if (oneTimePad.length == 0)
         return oldString;
 
     let output = "";
     for (let i=0; i < oldString.length; i++) {
-        output += rotateDigit(oldString.charAt(i),
+        output += rotateDigitChar(oldString.charAt(i),
                               oneTimePad.charAt(i % oneTimePad.length),
                               reverse);
     }
     return output;
 }
 
-function encode(oneTimePad) {
+function decode(oneTimePad) {
     output.textContent = rotateString(encodedDigits, oneTimePad);
 }
 
-input.onchange = input.onkeyup = (event) => encode(event.target.value);
-encode('');
+input.onchange = input.onkeyup = (event) => decode(event.target.value);
+decode('');
 
 // Tests
-// rotateDigit: basic rotation back and forth, over the 0 line
-console.assert(rotateDigit('0', 'a') == 7);
-console.assert(rotateDigit('7', 'a', true) == 0);
+// rotateDigitChar: basic rotation back and forth, over the 0 line
+console.assert(rotateDigitChar('0', 'a') == 7);
+console.assert(rotateDigitChar('7', 'a', true) == 0);
 
-// rotateDigit: Reverse
-console.assert(rotateDigit('9', 'a') == 6);
-console.assert(rotateDigit('6', 'a', true) == 9);
+// rotateDigitChar: Reverse
+console.assert(rotateDigitChar('9', 'a') == 6);
+console.assert(rotateDigitChar('6', 'a', true) == 9);
 
-// rotateDigit: Characters
-console.assert(rotateDigit('0', 'b') == 8);
-console.assert(rotateDigit('0', 'c') == 9);
-console.assert(rotateDigit('0', 'd') == 0);
-console.assert(rotateDigit('0', 'e') == 1);
-console.assert(rotateDigit('0', 'f') == 2);
-console.assert(rotateDigit('0', 'g') == 3);
-console.assert(rotateDigit('0', 'A') == 5);
-console.assert(rotateDigit('0', 'Z') == 0);
-console.assert(rotateDigit('0', ' ') == 2);
-console.assert(rotateDigit('0', '.') == 6);
+// rotateDigitChar: Characters
+console.assert(rotateDigitChar('0', 'b') == 8);
+console.assert(rotateDigitChar('0', 'c') == 9);
+console.assert(rotateDigitChar('0', 'd') == 0);
+console.assert(rotateDigitChar('0', 'e') == 1);
+console.assert(rotateDigitChar('0', 'f') == 2);
+console.assert(rotateDigitChar('0', 'g') == 3);
+console.assert(rotateDigitChar('0', 'A') == 5);
+console.assert(rotateDigitChar('0', 'Z') == 0);
+console.assert(rotateDigitChar('0', ' ') == 2);
+console.assert(rotateDigitChar('0', '.') == 6);
 
 // rotateString: Basics: empty, identity one time pad, simple OTP, long OTP.
 console.assert(rotateString('', '') == '');
