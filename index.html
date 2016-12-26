@@ -10,13 +10,18 @@
     <script>
 "use strict";
 
-let encodedDigits = ['00000000', '12345678', '99999999'];
+let encodedDigits = 
+    '00000000\n' +
+    '12345678\n' +
+    '99999999';
 
 function rotateDigit(old, offset, reverse) {
     const sign = (reverse) ? -1 : 1;
     console.assert(old.length == 1);
     console.assert(offset.length == 1);
     const oldInt = parseInt(old);
+    if (isNaN(oldInt))
+        return old;
     const signedOffset = sign * offset.charCodeAt(0);
     const newInt = ((oldInt + signedOffset) % 10 + 10) % 10; // handle negative 
     return newInt;
@@ -36,9 +41,7 @@ function rotateString(oldString, oneTimePad, reverse) {
 }
 
 function encode(oneTimePad) {
-    output.textContent = "";
-    encodedDigits.map(digits =>
-        output.textContent += rotateString(digits, oneTimePad) + "\n");
+    output.textContent = rotateString(encodedDigits, oneTimePad);
 }
 
 input.onchange = input.onkeyup = (event) => encode(event.target.value);
