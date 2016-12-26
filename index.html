@@ -1,9 +1,10 @@
 <!doctype html>
 <html>
+<head><title>OTP Codes</title></head>
 <body>
-<input id='input' type='text' autofocus/>
-<pre id='output'></pre>
-<script>
+    <input id='input' type='text' autofocus/>
+    <pre id='output'></pre>
+    <script>
 "use strict";
 
 let encodedDigits = ['00000000', '12345678', '99999999'];
@@ -70,6 +71,6 @@ console.assert(rotateString('0', 'longer one time pad') == 8);
 // rotateString: Reverse
 console.assert(rotateString('901901901', '123', true) == '000000000');
 
-</script>
+    </script>
 </body>
 </html>
