@@ -48,10 +48,16 @@ function rotateString(oldString, oneTimePad, reverse) {
     if (oneTimePad.length == 0)
         return oldString;
 
+    // Offset index into the oneTimePad by a prime
+    // so that any length variation in the oneTimePad
+    // will cause a change to all of the decoded values
+    // (not just the portions at or after the oneTimePad.length). 
+    let oneTimePadOffset = 983;
+
     let output = "";
     for (let i=0; i < oldString.length; i++) {
         output += rotateDigitChar(oldString.charAt(i),
-                              oneTimePad.charAt(i % oneTimePad.length),
+                              oneTimePad.charAt((i + oneTimePadOffset) % oneTimePad.length),
                               reverse);
     }
     return output;
