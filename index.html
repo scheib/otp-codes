@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<body>
+<input id='input' type='text'></input>
+<pre id='output'>
+<script>
+"use strict";
+
+let encodedDigits = ['00000000', '12345678', '99999999'];
+
+function rotateDigit(old, offset, reverse) {
+    const sign = (reverse) ? -1 : 1;
+    console.assert(old.length == 1);
+    console.assert(offset.length == 1);
+    const oldInt = parseInt(old);
+    const signedOffset = sign * offset.charCodeAt(0);
+    const newInt = ((oldInt + signedOffset) % 10 + 10) % 10; // handle negative 
+    return newInt;
+}
+
+function rotateString(oldString, oneTimePad, reverse) {
+    let output = "";
+    for (let i=0; i < oldString.length; i++) {
+        output += rotateDigit(oldString.charAt(i),
+                              oneTimePad.charAt(i % oneTimePad.length),
+                              reverse);
+    }
+    return output;
+}
+
+input.onchange = input.onkeyup = (event) => {
+    output.textContent = "v\n"
+    const str = event.target.value;
+    const len = str.length;
+    output.textContent += str;
+}
+
+// Tests
+// rotateDigit: basic rotation back and forth, over the 0 line
+console.assert(rotateDigit('0', 'a') == 7);
+console.assert(rotateDigit('7', 'a', true) == 0);
+
+// rotateDigit: Reverse
+console.assert(rotateDigit('9', 'a') == 6);
+console.assert(rotateDigit('6', 'a', true) == 9);
+
+// rotateDigit: Characters
+console.assert(rotateDigit('0', 'b') == 8);
+console.assert(rotateDigit('0', 'c') == 9);
+console.assert(rotateDigit('0', 'd') == 0);
+console.assert(rotateDigit('0', 'e') == 1);
+console.assert(rotateDigit('0', 'f') == 2);
+console.assert(rotateDigit('0', 'g') == 3);
+console.assert(rotateDigit('0', 'A') == 5);
+console.assert(rotateDigit('0', 'Z') == 0);
+console.assert(rotateDigit('0', ' ') == 2);
+console.assert(rotateDigit('0', '.') == 6);
+
+// rotateString: Basics: empty, identity one time pad, simple OTP, long OTP.
+console.assert(rotateString('', '') == '');
+console.assert(rotateString('0123456789', '2') == '0123456789');
+console.assert(rotateString('000000000', '123') == '901901901');
+console.assert(rotateString('0', 'longer one time pad') == 8);
+
+// rotateString: Reverse
+console.assert(rotateString('901901901', '123', true) == '000000000');
+
+</script>
+</body>
+</html>
