@@ -26,6 +26,7 @@ let encodedDigits =
 // Take a single character 'digit' and offset it by the ASCII code
 // of another character named 'offset'. The offset is modulo by 10
 // so that numbers wrap around.
+// Non digit characters aren't modified.
 // If 'reverse' is true, then perform the operation in reverse
 // (when encoding new values). 
 function rotateDigitChar(digit, offset, reverse) {
@@ -34,14 +35,15 @@ function rotateDigitChar(digit, offset, reverse) {
     console.assert(offset.length == 1);
     const digitAsInt = parseInt(digit);
     if (isNaN(digitAsInt))
-        return digit;
+        return digit; // Non digit characters aren't modified.
     const signedOffset = sign * offset.charCodeAt(0);
     const newInt = ((digitAsInt + signedOffset) % 10 + 10) % 10; // handle negative 
     return newInt;
 }
 
-// Take an input string 'oldString' and rotate each character by 
-// a corresponding character provided by the 'oneTimePad' string.
+// Take an input string 'oldString' and rotate each numeral character 
+// by a corresponding character provided by the 'oneTimePad' string.
+// Non digit characters aren't modified.
 // If 'reverse' is true, then perform the operation in reverse
 // (when encoding new values). 
 function rotateString(oldString, oneTimePad, reverse) {
