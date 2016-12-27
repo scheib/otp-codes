@@ -104,11 +104,11 @@ console.assert(rotateDigitChar('0', '.') == 6);
 // rotateString: Basics: empty, identity one time pad, simple OTP, long OTP.
 console.assert(rotateString('', '') == '');
 console.assert(rotateString('0123456789', '2') == '0123456789');
-console.assert(rotateString('000000000', '123') == '901901901');
-console.assert(rotateString('0', 'longer one time pad') == 8);
+console.assert(rotateString('000000000', '123') == '190190190');
+console.assert(rotateString('0', 'longer one time pad') == 1);
 
 // rotateString: Reverse
-console.assert(rotateString('901901901', '123', true) == '000000000');
+console.assert(rotateString('190190190', '123', true) == '000000000');
 
     </script>
 </body>
